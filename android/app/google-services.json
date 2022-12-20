@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1020123491610",
+    "project_id": "precoder-a0b2e",
+    "storage_bucket": "precoder-a0b2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020123491610:android:cec436454fcd96580f10a3",
+        "android_client_info": {
+          "package_name": "com.precoder.precoder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020123491610-8d26bfv8nd0vet653ij92tk1fc86db30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVE0nKq8PO6yrp6F7BbS-Fxch9JcPkeQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020123491610-8d26bfv8nd0vet653ij92tk1fc86db30.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
