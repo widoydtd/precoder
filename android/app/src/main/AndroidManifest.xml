@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.precoder">
    <application
-        android:label="precoder"
+        android:label="PreCoder"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
