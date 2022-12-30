@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:precoder/login.dart';
+import 'package:precoder/register.dart';
 
 void main() {
   runApp(const MyApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    // systemNavigationBarColor: Colors.black, // navigation bar color
     statusBarColor: Color.fromARGB(100, 0, 0, 0), // status bar color
   ));
 }
@@ -16,33 +18,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'PreCoder',
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MainPage(title: 'PreCoder'),
     );
   }
 }
 
-// <Pre-Authentication>
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,8 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 300,
                 margin: const EdgeInsets.only(top: 20),
                 child: ElevatedButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RegisterPage())),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                    );
+                  },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
@@ -91,8 +88,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 300,
                 margin: const EdgeInsets.fromLTRB(50, 20, 50, 0),
                 child: ElevatedButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const LoginPage())),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
@@ -113,85 +114,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-// </Pre-Authentication>
-
-// <Registration>
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
-
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController textEditingController = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 70),
-              height: 30,
-              width: 300,
-              child: Text('Register',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-            ),
-            Container(
-              //margin: EdgeInsets.only(top: 10),
-              height: 30,
-              width: 300,
-              child: Text('Fill in your data below',
-                  style: TextStyle(fontSize: 20)),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 50),
-              height: 30,
-              width: 300,
-              child: Text('Full Name', style: TextStyle(fontSize: 20)),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              height: 30,
-              width: 300,
-              child: TextField(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-// </Registration>
-
-// <Login>
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController textEditingController = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 70),
-              height: 60,
-              width: 300,
-              child: Text('Login',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-// </Login>

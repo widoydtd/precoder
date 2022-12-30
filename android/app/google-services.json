@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1020123491610",
-    "project_id": "precoder-a0b2e",
-    "storage_bucket": "precoder-a0b2e.appspot.com"
+    "project_number": "376177648326",
+    "project_id": "precoder-d85ab",
+    "storage_bucket": "precoder-d85ab.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1020123491610:android:cec436454fcd96580f10a3",
+        "mobilesdk_app_id": "1:376177648326:android:0338e82212161d42f9edc7",
         "android_client_info": {
           "package_name": "com.precoder.precoder"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1020123491610-8d26bfv8nd0vet653ij92tk1fc86db30.apps.googleusercontent.com",
+          "client_id": "376177648326-pc1ogcingv0hr2qb9qd2h9vr1blgc039.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDVE0nKq8PO6yrp6F7BbS-Fxch9JcPkeQU"
+          "current_key": "AIzaSyCF47BP8oeB9T5dwl5ecJitOmi2v28vtqE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1020123491610-8d26bfv8nd0vet653ij92tk1fc86db30.apps.googleusercontent.com",
+              "client_id": "376177648326-pc1ogcingv0hr2qb9qd2h9vr1blgc039.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
