@@ -7,86 +7,129 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  String _fullName = '';
-  String _username = '';
-  String _email = '';
-  String _password = '';
-  String _passwordConfirm = '';
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController fullnameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordcnfController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final usernameField = TextFormField(
+      autofocus: false,
+      controller: usernameController,
+      onSaved: (value) {
+        usernameController.text = value!;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Username",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    final fullnameField = TextFormField(
+      autofocus: false,
+      controller: fullnameController,
+      onSaved: (value) {
+        fullnameController.text = value!;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Full Name",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    final emailField = TextFormField(
+      autofocus: false,
+      controller: emailController,
+      keyboardType: TextInputType.emailAddress,
+      onSaved: (value) {
+        emailController.text = value!;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Email",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    final phoneField = TextFormField(
+      autofocus: false,
+      controller: phoneController,
+      keyboardType: TextInputType.phone,
+      onSaved: (value) {
+        phoneController.text = value!;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Phone Number",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    final passwordField = TextFormField(
+      autofocus: false,
+      controller: passwordController,
+      obscureText: true,
+      onSaved: (value) {
+        passwordController.text = value!;
+      },
+      textInputAction: TextInputAction.done,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Password",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    final passwordcnfField = TextFormField(
+      autofocus: false,
+      controller: passwordcnfController,
+      obscureText: true,
+      onSaved: (value) {
+        passwordcnfController.text = value!;
+      },
+      textInputAction: TextInputAction.done,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Password Confirmation",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+    );
+
+    final registerButton = Material(
+      elevation: 5,
+      borderRadius: BorderRadius.circular(10),
+      color: Color.fromARGB(255, 0, 105, 120),
+      child: MaterialButton(
+        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        minWidth: MediaQuery.of(context).size.width,
+        onPressed: () {},
+        child: Text("Register", style: TextStyle(color: Colors.white)),
+      ),
+    );
+
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Full Name'),
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return 'Please enter your full name';
-                }
-                return null;
-              },
-              onSaved: (value) => _fullName = value as String,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            width: 300,
+            child: Form(
+              key: _formKey,
+              child: Column(children: [
+                usernameField,
+                fullnameField,
+                emailField,
+                passwordField,
+                passwordcnfField,
+                registerButton
+              ]),
             ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Username'),
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return 'Please enter a username';
-                }
-                return null;
-              },
-              onSaved: (value) => _username = value as String,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Email'),
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                return null;
-              },
-              onSaved: (value) => _email = value as String,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Password'),
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return 'Please enter a password';
-                }
-                return null;
-              },
-              onSaved: (value) => _password = value as String,
-              obscureText: true,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Confirm Password'),
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return 'Please confirm your password';
-                }
-                if (value != _password) {
-                  return 'Passwords do not match';
-                }
-                return null;
-              },
-              obscureText: true,
-            ),
-            ElevatedButton(
-              onPressed: _submitForm,
-              child: Text('Submit'),
-            ),
-          ],
+          ),
         ),
       ),
     );
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-    }
   }
 }
