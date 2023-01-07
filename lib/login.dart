@@ -111,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
         switch (error.code) {
           case "invalid-email":
             errorMessage = "The email you entered is incorrect";
-
             break;
           case "wrong-password":
             errorMessage = "The password you entered is incorrect";
