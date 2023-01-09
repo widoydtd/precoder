@@ -32,8 +32,13 @@ class _HomeScreenState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Welcome"),
-        centerTitle: true,
+        title: Image.asset(
+          'assets/PreCoder_white.png',
+          scale: 8,
+        ),
+        titleSpacing: 25,
+        backgroundColor: Color.fromARGB(255, 0, 105, 120),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Padding(

@@ -13,9 +13,11 @@ Future<void> main() async {
   Firebase.initializeApp();
   runApp(const MyApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Color.fromARGB(100, 0, 0, 0), // status bar color
+    statusBarColor: Color.fromARGB(255, 0, 0, 0), // status bar color
   ));
 }
+
+//const primCol = Color(0xFF006978);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -25,8 +27,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'PreCoder',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
+          //backgroundColor: primCol,
+          ),
       debugShowCheckedModeBanner: false,
       home: const MainPage(title: 'PreCoder'),
     );
