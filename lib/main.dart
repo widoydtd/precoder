@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:precoder/home.dart';
 import 'package:precoder/login.dart';
 import 'package:precoder/register.dart';
 
@@ -11,26 +13,33 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MyApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Color.fromARGB(255, 0, 0, 0), // status bar color
   ));
 }
 
-//const primCol = Color(0xFF006978);
-
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PreCoder',
-      theme: ThemeData(
-          //backgroundColor: primCol,
-          ),
-      debugShowCheckedModeBanner: false,
-      home: const MainPage(title: 'PreCoder'),
+    return StreamBuilder<User>(
+      stream: FirebaseAuth.instance.authStateChanges().cast<User>(),
+      builder: (context, AsyncSnapshot<User> snapshot) {
+        if (snapshot.hasData) {
+          return WillPopScope(
+            onWillPop: () async {
+              return false;
+            },
+            child: MaterialApp(
+              home: HomePage(),
+            ),
+          );
+        } else {
+          return MaterialApp(
+            home: MainPage(title: 'PreCoder'),
+          );
+        }
+      },
     );
   }
 }

@@ -371,24 +371,25 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          margin: EdgeInsets.only(top: 20),
-          width: 300,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                registertext,
-                usernameField,
-                fullnameField,
-                emailField,
-                phoneField,
-                passwordField,
-                confirmPasswordField,
-                signUpButton,
-              ],
-            ),
-          ),
-        ),
+            margin: EdgeInsets.only(top: 20),
+            width: 300,
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    registertext,
+                    usernameField,
+                    fullnameField,
+                    emailField,
+                    phoneField,
+                    passwordField,
+                    confirmPasswordField,
+                    signUpButton,
+                  ],
+                ),
+              ),
+            )),
       ),
     );
   }
