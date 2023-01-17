@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:precoder/model/user_model.dart';
 import 'package:precoder/main.dart';
+import 'package:precoder/setting/account_setting.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -36,48 +37,35 @@ class _HomeScreenState extends State<HomePage> {
           'assets/PreCoder_white.png',
           scale: 8,
         ),
-        titleSpacing: 25,
-        backgroundColor: Color.fromARGB(255, 0, 105, 120),
+        elevation: 0,
         automaticallyImplyLeading: false,
+        backgroundColor: Color.fromARGB(255, 0, 105, 120),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AccountSettingPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              // SizedBox(
-              //   height: 150,
-              //   child: Image.asset("assets/logo.png", fit: BoxFit.contain),
-              // ),
-              Text(
-                "Welcome Back",
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              width: 350,
+              child: Text(
+                "Welcome, " + "${loggedInUser.username}",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("${loggedInUser.username}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              Text("${loggedInUser.fullname}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              SizedBox(
-                height: 15,
-              ),
-              ActionChip(
-                  label: Text("Logout"),
-                  onPressed: () {
-                    logout(context);
-                  }),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

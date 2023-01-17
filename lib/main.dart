@@ -32,12 +32,16 @@ class MyApp extends StatelessWidget {
             },
             child: MaterialApp(
               home: HomePage(),
+              debugShowCheckedModeBanner: false,
             ),
           );
+          // return HomePage();
         } else {
           return MaterialApp(
             home: MainPage(title: 'PreCoder'),
+            debugShowCheckedModeBanner: false,
           );
+          // return ProfilePicturePage();
         }
       },
     );
@@ -73,6 +77,7 @@ class _MainPageState extends State<MainPage> {
               width: 300,
               child: Text(
                 'Access algorithm and programming courses and other interesting features from your phone',
+                style: TextStyle(fontSize: 16),
               ),
             ),
             Container(
