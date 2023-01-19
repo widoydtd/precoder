@@ -9,7 +9,7 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
@@ -21,29 +21,30 @@ class _RegisterPageState extends State<RegisterPage> {
   // our form key
   final _formKey = GlobalKey<FormState>();
   // editing Controller
-  final usernameEditingController = new TextEditingController();
-  final fullnameEditingController = new TextEditingController();
-  final emailEditingController = new TextEditingController();
-  final phoneEditingController = new TextEditingController();
-  final passwordEditingController = new TextEditingController();
-  final confirmPasswordEditingController = new TextEditingController();
+  final usernameEditingController = TextEditingController();
+  final fullnameEditingController = TextEditingController();
+  final emailEditingController = TextEditingController();
+  final phoneEditingController = TextEditingController();
+  final passwordEditingController = TextEditingController();
+  final confirmPasswordEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final registertext = Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: const EdgeInsets.only(top: 20),
           width: 300,
-          child: Text(
+          child: const Text(
             "Register",
             textAlign: TextAlign.left,
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 30),
           ),
         ),
         Container(
+          margin: const EdgeInsets.all(0),
           width: 300,
-          child: Text(
+          child: const Text(
             "Fill in your data below",
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 20),
@@ -56,23 +57,23 @@ class _RegisterPageState extends State<RegisterPage> {
     final usernameField = Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 30),
+          margin: const EdgeInsets.only(top: 30),
           width: 300,
-          child: Text(
+          child: const Text(
             "Username",
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 20),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
           child: TextFormField(
             autofocus: false,
             controller: usernameEditingController,
             keyboardType: TextInputType.name,
             validator: (value) {
-              RegExp regex = new RegExp(r'^.{8,}$');
+              RegExp regex = RegExp(r'^.{8,}$');
               if (value!.isEmpty) {
                 return ("Username cannot be Empty");
               }
@@ -86,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
             },
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+              contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
@@ -107,16 +108,16 @@ class _RegisterPageState extends State<RegisterPage> {
     final fullnameField = Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
-          child: Text(
+          child: const Text(
             "Full Name",
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 20),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
           child: TextFormField(
               autofocus: false,
@@ -133,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide:
@@ -153,16 +154,16 @@ class _RegisterPageState extends State<RegisterPage> {
     final emailField = Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
-          child: Text(
+          child: const Text(
             "Email",
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 20),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
           child: TextFormField(
               autofocus: false,
@@ -184,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide:
@@ -204,23 +205,23 @@ class _RegisterPageState extends State<RegisterPage> {
     final phoneField = Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
-          child: Text(
+          child: const Text(
             "Phone Number",
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 20),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
           child: TextFormField(
               autofocus: false,
               controller: phoneEditingController,
               keyboardType: TextInputType.phone,
               validator: (value) {
-                RegExp regex = new RegExp(r'^.{10,14}$');
+                RegExp regex = RegExp(r'^.{10,14}$');
                 if (value!.isEmpty) {
                   return ("Phone number must not be empty");
                 }
@@ -235,7 +236,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide:
@@ -255,36 +256,37 @@ class _RegisterPageState extends State<RegisterPage> {
     final passwordField = Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
-          child: Text(
+          child: const Text(
             "Password",
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 20),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
           child: TextFormField(
               autofocus: false,
               controller: passwordEditingController,
               obscureText: true,
               validator: (value) {
-                RegExp regex = new RegExp(r'^.{8,}$');
+                RegExp regex = RegExp(r'^.{8,}$');
                 if (value!.isEmpty) {
                   return ("Password must not be empty");
                 }
                 if (!regex.hasMatch(value)) {
                   return ("Password must be at least 8 characters long");
                 }
+                return null;
               },
               onSaved: (value) {
                 passwordEditingController.text = value!;
               },
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide:
@@ -304,16 +306,16 @@ class _RegisterPageState extends State<RegisterPage> {
     final confirmPasswordField = Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
-          child: Text(
+          child: const Text(
             "Confirm Password",
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 20),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 10),
           width: 300,
           child: TextFormField(
               autofocus: false,
@@ -331,7 +333,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide:
@@ -348,18 +350,18 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     final signUpButton = Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: const EdgeInsets.only(top: 30),
         child: Material(
             borderRadius: BorderRadius.circular(10),
-            color: Color.fromARGB(255, 0, 105, 120),
+            color: const Color.fromARGB(255, 0, 105, 120),
             child: MaterialButton(
-                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                 minWidth: MediaQuery.of(context).size.width,
                 onPressed: () {
                   signUp(emailEditingController.text,
                       passwordEditingController.text);
                 },
-                child: Text(
+                child: const Text(
                   "Register",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -371,7 +373,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Center(
         child: Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 20),
             width: 300,
             child: SingleChildScrollView(
               child: Form(
@@ -418,7 +420,6 @@ class _RegisterPageState extends State<RegisterPage> {
             errorMessage = "An unknown error has occured. Please try again";
         }
         Fluttertoast.showToast(msg: errorMessage!);
-        print(error.code);
       }
     }
   }
@@ -446,7 +447,9 @@ class _RegisterPageState extends State<RegisterPage> {
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");
 
-    Navigator.pushAndRemoveUntil((context),
-        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => const HomePage()),
+        (route) => false);
   }
 }

@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:precoder/home.dart';
 import 'package:precoder/login.dart';
 import 'package:precoder/register.dart';
@@ -13,13 +11,16 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   Firebase.initializeApp();
-  runApp(MyApp());
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  runApp(const MyApp());
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Color.fromARGB(255, 0, 0, 0), // status bar color
   ));
 }
 
 class MyApp extends StatelessWidget {
+  final MyApp? myApp;
+  const MyApp({super.key, this.myApp});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User>(
@@ -30,18 +31,16 @@ class MyApp extends StatelessWidget {
             onWillPop: () async {
               return false;
             },
-            child: MaterialApp(
+            child: const MaterialApp(
               home: HomePage(),
               debugShowCheckedModeBanner: false,
             ),
           );
-          // return HomePage();
         } else {
-          return MaterialApp(
+          return const MaterialApp(
             home: MainPage(title: 'PreCoder'),
             debugShowCheckedModeBanner: false,
           );
-          // return ProfilePicturePage();
         }
       },
     );
@@ -72,10 +71,10 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(bottom: 20),
+              margin: const EdgeInsets.only(bottom: 20),
               height: 60,
               width: 300,
-              child: Text(
+              child: const Text(
                 'Access algorithm and programming courses and other interesting features from your phone',
                 style: TextStyle(fontSize: 16),
               ),
@@ -88,7 +87,8 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterPage()),
                     );
                   },
                   style: ButtonStyle(
@@ -98,8 +98,8 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                       backgroundColor: MaterialStateProperty.all(
-                          Color.fromARGB(255, 0, 105, 120))),
-                  child: Text('Register',
+                          const Color.fromARGB(255, 0, 105, 120))),
+                  child: const Text('Register',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
@@ -113,7 +113,8 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
                     );
                   },
                   style: ButtonStyle(
@@ -123,8 +124,8 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                       backgroundColor: MaterialStateProperty.all(
-                          Color.fromARGB(255, 0, 105, 120))),
-                  child: Text('Login',
+                          const Color.fromARGB(255, 0, 105, 120))),
+                  child: const Text('Login',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
