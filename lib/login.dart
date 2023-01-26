@@ -25,21 +25,21 @@ class _LoginPageState extends State<LoginPage> {
     final logintext = Column(
       children: <Widget>[
         Container(
-          margin: const EdgeInsets.only(top: 20),
+          margin: EdgeInsets.zero,
           width: 300,
           child: const Text(
             "Welcome Back",
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 30),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
         Container(
-          margin: const EdgeInsets.all(0),
+          margin: EdgeInsets.zero,
           width: 300,
           child: const Text(
             "Login to continue your progress",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
       ],
@@ -48,16 +48,16 @@ class _LoginPageState extends State<LoginPage> {
     final emailField = Column(
       children: <Widget>[
         Container(
-          margin: const EdgeInsets.only(top: 30),
+          margin: const EdgeInsets.only(top: 20),
           width: 300,
           child: const Text(
             "Email",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 5),
           child: TextFormField(
             autofocus: false,
             controller: emailController,
@@ -101,10 +101,10 @@ class _LoginPageState extends State<LoginPage> {
             child: const Text(
               "Password",
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 18),
             )),
         Container(
-          margin: const EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 5),
           child: TextFormField(
             autofocus: false,
             controller: passwordController,
@@ -142,25 +142,29 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final loginButton = Container(
-        margin: const EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 30),
+        width: 300,
+        height: 50,
         child: Material(
           borderRadius: BorderRadius.circular(10),
           color: const Color.fromARGB(255, 0, 105, 120),
           child: MaterialButton(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             minWidth: MediaQuery.of(context).size.width,
             onPressed: () {
               signIn(emailController.text, passwordController.text);
             },
             child: const Text("Login",
-                style: TextStyle(color: Colors.white, fontSize: 20)),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)),
           ),
         ));
 
     return Scaffold(
       body: Center(
         child: Container(
-          margin: const EdgeInsets.only(top: 20),
+          margin: const EdgeInsets.only(top: 70),
           width: 300,
           child: Form(
             key: _formKey,
@@ -179,8 +183,10 @@ class _LoginPageState extends State<LoginPage> {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const HomePage())),
+                  Navigator.pushAndRemoveUntil(
+                      (context),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      (route) => false),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

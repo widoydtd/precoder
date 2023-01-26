@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,21 +34,21 @@ class _RegisterPageState extends State<RegisterPage> {
     final registertext = Column(
       children: <Widget>[
         Container(
-          margin: const EdgeInsets.only(top: 20),
+          margin: EdgeInsets.zero,
           width: 300,
           child: const Text(
             "Register",
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 30),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
         Container(
-          margin: const EdgeInsets.all(0),
+          margin: EdgeInsets.zero,
           width: 300,
           child: const Text(
             "Fill in your data below",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
       ],
@@ -57,16 +58,16 @@ class _RegisterPageState extends State<RegisterPage> {
     final usernameField = Column(
       children: <Widget>[
         Container(
-          margin: const EdgeInsets.only(top: 30),
+          margin: const EdgeInsets.only(top: 20),
           width: 300,
           child: const Text(
             "Username",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 5),
           width: 300,
           child: TextFormField(
             autofocus: false,
@@ -111,13 +112,13 @@ class _RegisterPageState extends State<RegisterPage> {
           margin: const EdgeInsets.only(top: 10),
           width: 300,
           child: const Text(
-            "Full Name",
+            "Name",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 5),
           width: 300,
           child: TextFormField(
               autofocus: false,
@@ -159,11 +160,11 @@ class _RegisterPageState extends State<RegisterPage> {
           child: const Text(
             "Email",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 5),
           width: 300,
           child: TextFormField(
               autofocus: false,
@@ -210,11 +211,11 @@ class _RegisterPageState extends State<RegisterPage> {
           child: const Text(
             "Phone Number",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 5),
           width: 300,
           child: TextFormField(
               autofocus: false,
@@ -261,11 +262,11 @@ class _RegisterPageState extends State<RegisterPage> {
           child: const Text(
             "Password",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 5),
           width: 300,
           child: TextFormField(
               autofocus: false,
@@ -311,11 +312,11 @@ class _RegisterPageState extends State<RegisterPage> {
           child: const Text(
             "Confirm Password",
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10),
+          margin: const EdgeInsets.only(top: 5),
           width: 300,
           child: TextFormField(
               autofocus: false,
@@ -351,11 +352,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
     final signUpButton = Container(
         margin: const EdgeInsets.only(top: 30),
+        width: 300,
+        height: 50,
         child: Material(
             borderRadius: BorderRadius.circular(10),
             color: const Color.fromARGB(255, 0, 105, 120),
             child: MaterialButton(
-                padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                 minWidth: MediaQuery.of(context).size.width,
                 onPressed: () {
                   signUp(emailEditingController.text,
@@ -365,7 +367,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   "Register",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ))));
@@ -373,8 +375,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Center(
         child: Container(
-            margin: const EdgeInsets.only(top: 20),
-            width: 300,
+            margin: EdgeInsets.zero,
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
@@ -396,35 +397,28 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void signUp(String email, String password) async {
+  Future<void> signUp(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       try {
-        await _auth
-            .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => {postDetailsToFirestore()})
-            .catchError((e) {
-          Fluttertoast.showToast(msg: e!.message);
-        });
+        await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        postDetailsToFirestore();
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
-          case "invalid-email":
-            errorMessage = "The email you entered is incorrect";
-            break;
-          case "wrong-password":
-            errorMessage = "The password you entered is incorrect";
-            break;
-          case "user-not-found":
-            errorMessage = "The account doesn't exist";
-            break;
           default:
-            errorMessage = "An unknown error has occured. Please try again";
+            errorMessage = "The email address already exists";
         }
         Fluttertoast.showToast(msg: errorMessage!);
       }
     }
   }
 
-  postDetailsToFirestore() async {
+  Future<void> deleteUser() async {
+    User? user = _auth.currentUser;
+    await user!.delete();
+  }
+
+  Future<void> postDetailsToFirestore() async {
     // calling our firestore
     // calling our user model
     // sedning these values
@@ -441,15 +435,31 @@ class _RegisterPageState extends State<RegisterPage> {
     userModel.fullname = fullnameEditingController.text;
     userModel.phone = phoneEditingController.text;
 
-    await firebaseFirestore
+    final QuerySnapshot snapshotUsername = await firebaseFirestore
         .collection("users")
-        .doc(user.uid)
-        .set(userModel.toMap());
-    Fluttertoast.showToast(msg: "Account created successfully :) ");
+        .where("username", isEqualTo: userModel.username)
+        .get();
+    final QuerySnapshot snapshotPhone = await firebaseFirestore
+        .collection("users")
+        .where("phone", isEqualTo: userModel.phone)
+        .get();
+    if (snapshotUsername.docs.isNotEmpty) {
+      Fluttertoast.showToast(msg: "The username already exists");
+      deleteUser();
+    } else if (snapshotPhone.docs.isNotEmpty) {
+      Fluttertoast.showToast(msg: "The phone number already exists");
+      deleteUser();
+    } else {
+      await firebaseFirestore
+          .collection("users")
+          .doc(user.uid)
+          .set(userModel.toMap());
+      Fluttertoast.showToast(msg: "Account created successfully");
 
-    Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(builder: (context) => const HomePage()),
-        (route) => false);
+      Navigator.pushAndRemoveUntil(
+          (context),
+          MaterialPageRoute(builder: (context) => const HomePage()),
+          (route) => false);
+    }
   }
 }
