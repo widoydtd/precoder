@@ -47,6 +47,8 @@ dependencies:
   firebase_database: ^10.0.9
   file_picker: ^5.2.5
   font_awesome_flutter: ^10.3.0
+  permission_handler: ^10.2.0
+  flutter_tools: ^0.0.1-beta
 
 dev_dependencies:
   flutter_lints: ^2.0.1
@@ -62,6 +64,11 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/app_logo.png"
+
+flutter_tools:
+  androidManifest:
+        uses-permission:
+            - android.permission.READ_EXTERNAL_STORAGE
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

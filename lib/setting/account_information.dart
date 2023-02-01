@@ -44,6 +44,14 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
           children: <Widget>[
             Container(
               margin: const EdgeInsets.only(top: 20),
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.black)),
+              child: Image.network(loggedInUser.pfp.toString()),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 20),
               width: 350,
               child: const Text(
                 "Username:",

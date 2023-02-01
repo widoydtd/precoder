@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:precoder/model/user_model.dart';
-import 'package:precoder/home.dart';
 import 'package:precoder/setting/account_pfp.dart';
+import 'package:precoder/setting/account_email.dart';
+import 'package:precoder/setting/account_password.dart';
 
 class AccountEditPage extends StatefulWidget {
   const AccountEditPage({Key? key}) : super(key: key);
@@ -15,14 +17,12 @@ class AccountEditPage extends StatefulWidget {
 class _AccountEditPageState extends State<AccountEditPage> {
   final user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  String? errorMessage;
 
-  final _formKey = GlobalKey<FormState>();
-
+  final pfpEditingController = TextEditingController();
   final usernameEditingController = TextEditingController();
   final fullnameEditingController = TextEditingController();
-  final emailEditingController = TextEditingController();
   final phoneEditingController = TextEditingController();
-  final passwordEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -73,6 +73,44 @@ class _AccountEditPageState extends State<AccountEditPage> {
                               color: Colors.black))),
                 ),
                 Container(
+                  margin: EdgeInsets.zero,
+                  width: 350,
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          top: BorderSide(width: 2, color: Color(0xFF006978)))),
+                  child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ChangeEmailPage()),
+                        );
+                      },
+                      title: const Text("Change Email",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black))),
+                ),
+                Container(
+                  margin: EdgeInsets.zero,
+                  width: 350,
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          top: BorderSide(width: 2, color: Color(0xFF006978)))),
+                  child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ChangePasswordPage()),
+                        );
+                      },
+                      title: const Text("Change Password",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black))),
+                ),
+                Container(
                     margin: EdgeInsets.zero,
                     width: 350,
                     decoration: const BoxDecoration(
@@ -80,7 +118,6 @@ class _AccountEditPageState extends State<AccountEditPage> {
                             top: BorderSide(
                                 width: 2, color: Color(0xFF006978)))),
                     child: ExpansionTile(
-                      key: GlobalKey(),
                       title: const Text(
                         "Change Username",
                         style: TextStyle(
@@ -102,11 +139,20 @@ class _AccountEditPageState extends State<AccountEditPage> {
                               style: TextStyle(fontWeight: FontWeight.w500),
                             ),
                             subtitle: TextFormField(
-                              decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 10)),
-                              onSaved: (value) => loggedInUser.username = value,
-                            ),
+                                controller: usernameEditingController,
+                                validator: (value) {
+                                  RegExp regex = RegExp(r'^.{8,}$');
+                                  if (!regex.hasMatch(value!)) {
+                                    return ("Username must be at least 8 characters long");
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 10)),
+                                onSaved: (value) {
+                                  usernameEditingController.text = value!;
+                                }),
                           ),
                         )
                       ],
@@ -119,7 +165,6 @@ class _AccountEditPageState extends State<AccountEditPage> {
                             top: BorderSide(
                                 width: 2, color: Color(0xFF006978)))),
                     child: ExpansionTile(
-                      key: GlobalKey(),
                       title: const Text(
                         "Change Name",
                         style: TextStyle(
@@ -140,12 +185,14 @@ class _AccountEditPageState extends State<AccountEditPage> {
                               "New name",
                               style: TextStyle(fontWeight: FontWeight.w500),
                             ),
-                            subtitle: TextField(
+                            subtitle: TextFormField(
+                              controller: fullnameEditingController,
                               decoration: const InputDecoration(
                                   contentPadding:
                                       EdgeInsets.symmetric(vertical: 10)),
-                              onChanged: (value) =>
-                                  loggedInUser.fullname = value,
+                              onSaved: (value) {
+                                fullnameEditingController.text = value!;
+                              },
                             ),
                           ),
                         )
@@ -162,51 +209,6 @@ class _AccountEditPageState extends State<AccountEditPage> {
                       ),
                     )),
                     child: ExpansionTile(
-                      key: GlobalKey(),
-                      title: const Text(
-                        "Change Email",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      children: <Widget>[
-                        ListTile(
-                          title: const Text(
-                            "Current email",
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          subtitle: Text("${loggedInUser.email}"),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: ListTile(
-                            title: const Text(
-                              "New email",
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                            subtitle: TextField(
-                              decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 10)),
-                              onChanged: (value) {
-                                loggedInUser.email = value;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
-                Container(
-                    margin: EdgeInsets.zero,
-                    width: 350,
-                    decoration: const BoxDecoration(
-                        border: Border(
-                      top: BorderSide(
-                        width: 2,
-                        color: Color(0xFF006978),
-                      ),
-                    )),
-                    child: ExpansionTile(
-                      key: GlobalKey(),
                       title: const Text(
                         "Change Phone Number",
                         style: TextStyle(
@@ -227,56 +229,21 @@ class _AccountEditPageState extends State<AccountEditPage> {
                               "New phone number",
                               style: TextStyle(fontWeight: FontWeight.w500),
                             ),
-                            subtitle: TextField(
+                            subtitle: TextFormField(
+                              controller: phoneEditingController,
+                              keyboardType: TextInputType.phone,
                               decoration: const InputDecoration(
                                   contentPadding:
                                       EdgeInsets.symmetric(vertical: 10)),
-                              onChanged: (value) {
-                                loggedInUser.phone = value;
+                              validator: (value) {
+                                RegExp regex = RegExp(r'^.{10,14}$');
+                                if (!regex.hasMatch(value!)) {
+                                  return ("Please enter a valid phone number");
+                                }
+                                return null;
                               },
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
-                Container(
-                    margin: EdgeInsets.zero,
-                    width: 350,
-                    decoration: const BoxDecoration(
-                        border: Border(
-                      top: BorderSide(
-                        width: 2,
-                        color: Color(0xFF006978),
-                      ),
-                    )),
-                    child: ExpansionTile(
-                      key: GlobalKey(),
-                      title: const Text(
-                        "Change Password",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      children: <Widget>[
-                        ListTile(
-                          title: const Text(
-                            "Current password",
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          subtitle: Text("${loggedInUser.email}"),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: ListTile(
-                            title: const Text(
-                              "New password",
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                            subtitle: TextField(
-                              decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 10)),
-                              onChanged: (value) {
-                                loggedInUser.email = value;
+                              onSaved: (value) {
+                                phoneEditingController.text = value!;
                               },
                             ),
                           ),
@@ -289,14 +256,6 @@ class _AccountEditPageState extends State<AccountEditPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       await updateUserInfo();
-                      setState(() {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      });
                     },
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -308,7 +267,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
                             const Color.fromARGB(255, 0, 105, 120))),
                     child: const Text('Save Changes'),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -319,19 +278,76 @@ class _AccountEditPageState extends State<AccountEditPage> {
 
   Future<void> updateUserInfo() async {
     final User? user = FirebaseAuth.instance.currentUser;
-    try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user!.uid)
-          .update({
-        'username': loggedInUser.username,
-        'fullname': loggedInUser.fullname,
-        'email': loggedInUser.email,
-        'phone': loggedInUser.phone,
-      });
-      // Update successful, show a message to the user
-    } catch (e) {
-      // An error occurred, show the error message to the user
+    UserModel userModel = UserModel();
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    // pfpEditingController.text = loggedInUser.pfp!;
+
+    // if (pfpEditingController.text == loggedInUser.pfp) {
+    //   debugPrint(pfpEditingController.text);
+    // }
+
+    if (usernameEditingController.text.isEmpty) {
+      usernameEditingController.text = loggedInUser.username!;
+    }
+    if (fullnameEditingController.text.isEmpty) {
+      fullnameEditingController.text = loggedInUser.fullname!;
+    }
+    if (phoneEditingController.text.isEmpty) {
+      phoneEditingController.text = loggedInUser.phone!;
+    }
+
+    userModel.email = user!.email;
+    userModel.uid = user.uid;
+    // userModel.pfp = pfpEditingController.text;
+    userModel.username = usernameEditingController.text;
+    userModel.fullname = fullnameEditingController.text;
+    userModel.phone = phoneEditingController.text;
+
+    final QuerySnapshot snapshotUid = await firebaseFirestore
+        .collection("users")
+        .where("uid", isEqualTo: userModel.uid)
+        .get();
+
+    if (snapshotUid.docs.isNotEmpty) {
+      final QuerySnapshot snapshotUsername = await firebaseFirestore
+          .collection("users")
+          .where("username", isEqualTo: userModel.username)
+          .get();
+
+      final QuerySnapshot snapshotPhone = await firebaseFirestore
+          .collection("users")
+          .where("phone", isEqualTo: userModel.phone)
+          .get();
+
+      if (snapshotUsername.docs.isNotEmpty &&
+          userModel.username != loggedInUser.username) {
+        Fluttertoast.showToast(msg: "The username already exists");
+      } else if (userModel.username.toString().length < 8) {
+        Fluttertoast.showToast(
+            msg: "Username must be at least 8 characters long");
+      } else if (snapshotPhone.docs.isNotEmpty &&
+          userModel.phone != loggedInUser.phone) {
+        Fluttertoast.showToast(msg: "The phone number already exists");
+      } else if (!RegExp(r'^\d{10,14}$').hasMatch(userModel.phone.toString())) {
+        Fluttertoast.showToast(msg: "Please enter a valid phone number");
+      } else {
+        debugPrint(userModel.pfp.toString());
+
+        await firebaseFirestore.collection("users").doc(user.uid).update({
+          'username': userModel.username,
+          'fullname': userModel.fullname,
+          'phone': userModel.phone
+        }).then((value) => setState(() {
+              debugPrint(userModel.pfp.toString());
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AccountEditPage(),
+                ),
+              );
+            }));
+        // Update successful, show a message to the user
+      }
     }
   }
 }

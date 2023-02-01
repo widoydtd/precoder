@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,13 +15,9 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _auth = FirebaseAuth.instance;
-
-  // string for displaying the error Message
   String? errorMessage;
-
-  // our form key
   final _formKey = GlobalKey<FormState>();
-  // editing Controller
+
   final usernameEditingController = TextEditingController();
   final fullnameEditingController = TextEditingController();
   final emailEditingController = TextEditingController();
@@ -54,7 +50,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ],
     );
 
-    //username field
     final usernameField = Column(
       children: <Widget>[
         Container(
@@ -105,7 +100,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ],
     );
 
-    //full name field
     final fullnameField = Column(
       children: <Widget>[
         Container(
@@ -126,7 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.name,
               validator: (value) {
                 if (value!.isEmpty) {
-                  return ("Full name must not be empty");
+                  return ("Name must not be empty");
                 }
                 return null;
               },
@@ -151,7 +145,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ],
     );
 
-    //email field
     final emailField = Column(
       children: <Widget>[
         Container(
@@ -174,7 +167,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 if (value!.isEmpty) {
                   return ("Email address must not be empty");
                 }
-                // reg expression for email validation
                 if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                     .hasMatch(value)) {
                   return ("Please enter a valid email address");
@@ -202,7 +194,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ],
     );
 
-    //phone field
     final phoneField = Column(
       children: <Widget>[
         Container(
@@ -226,7 +217,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 if (value!.isEmpty) {
                   return ("Phone number must not be empty");
                 }
-                // reg expression for email validation
                 if (!regex.hasMatch(value)) {
                   return ("Please enter a valid phone number");
                 }
@@ -253,7 +243,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ],
     );
 
-    //password field
     final passwordField = Column(
       children: <Widget>[
         Container(
@@ -303,7 +292,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ],
     );
 
-    //confirm password field
     final confirmPasswordField = Column(
       children: <Widget>[
         Container(
@@ -418,17 +406,24 @@ class _RegisterPageState extends State<RegisterPage> {
     await user!.delete();
   }
 
-  Future<void> postDetailsToFirestore() async {
-    // calling our firestore
-    // calling our user model
-    // sedning these values
+  Future<String> getImageUrlFromFirebase() async {
+    User? user = _auth.currentUser;
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('images/defaultpfp/defaultpfp.jpg');
+    String pfp = await ref.getDownloadURL();
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .update({'pfp': pfp});
+    return pfp;
+  }
 
+  Future<void> postDetailsToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
-
     UserModel userModel = UserModel();
 
-    // writing all the values
     userModel.email = user!.email;
     userModel.uid = user.uid;
     userModel.username = usernameEditingController.text;
@@ -453,7 +448,8 @@ class _RegisterPageState extends State<RegisterPage> {
       await firebaseFirestore
           .collection("users")
           .doc(user.uid)
-          .set(userModel.toMap());
+          .set(userModel.toMap())
+          .then((value) => getImageUrlFromFirebase());
       Fluttertoast.showToast(msg: "Account created successfully");
 
       Navigator.pushAndRemoveUntil(
